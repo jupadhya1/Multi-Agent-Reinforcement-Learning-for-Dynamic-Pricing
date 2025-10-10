@@ -1,6 +1,6 @@
 Retail AI Agent Army with Full Observability
 This project demonstrates an advanced multi-agent system designed for complex retail decision-making, specifically focusing on dynamic pricing. It showcases an enterprise-grade architecture with a strong emphasis on observability, using LangSmith for end-to-end tracing and monitoring.
-![Uploading image.png…]()
+
 
 
 Shutterstock
