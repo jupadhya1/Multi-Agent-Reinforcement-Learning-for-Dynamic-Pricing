@@ -1,121 +1,250 @@
-Retail AI Agent Army with Full Observability
-This project demonstrates an advanced multi-agent system designed for complex retail decision-making, specifically focusing on dynamic pricing. It showcases an enterprise-grade architecture with a strong emphasis on observability, using LangSmith for end-to-end tracing and monitoring.
+# 🛒 Multi-Agent Reinforcement Learning for Dynamic Pricing
 
 
+## Overview
 
-Shutterstock
-🚀 Core Features
-Multi-Agent System: Utilizes a team of specialized AI agents that collaborate to solve complex retail problems.
+This project demonstrates an advanced multi-agent system designed for complex retail decision-making, specifically focusing on **dynamic pricing optimization**. It showcases an enterprise-grade architecture with a strong emphasis on **observability**, using LangSmith for end-to-end tracing and monitoring.
 
-Model Context Protocol (MCP): A simulated MCP server provides agents with access to powerful, domain-specific tools like price_optimizer and demand_forecaster.
+The system leverages multiple specialized AI agents that collaborate through a sophisticated orchestration layer, utilizing the **Model Context Protocol (MCP)** for tool access and **Agent-to-Agent (A2A)** communication for seamless information sharing.
 
-Agent-to-Agent (A2A) Communication: A dedicated communication layer allows agents to interact, share insights, and broadcast information across the network.
+---
 
-Observable Vector Database: Enriches agents' context with relevant business knowledge, policies, and historical data through a ChromaDB-powered vector store with full performance monitoring.
+## Features
 
-End-to-End Observability: Integrates seamlessly with LangSmith to provide detailed, interactive traces of every agent action, tool usage, and LLM call, making the system transparent and debuggable.
+| Feature | Description |
+|---------|-------------|
+| **Multi-Agent System** | Team of specialized AI agents collaborating to solve complex retail pricing problems |
+| **Model Context Protocol (MCP)** | Simulated MCP server providing domain-specific tools like `price_optimizer` and `demand_forecaster` |
+| **A2A Communication** | Dedicated layer for agents to interact, share insights, and broadcast information |
+| **Observable Vector Database** | ChromaDB-powered vector store enriching agents with business knowledge and policies |
+| **End-to-End Observability** | LangSmith integration for detailed traces of every agent action and LLM call |
+| **Workflow Orchestration** | Central orchestrator managing complex workflows and aggregating findings |
 
-Automated Workflow Orchestration: A central orchestrator manages complex workflows, deploying the right agents for specific tasks and aggregating their findings into a cohesive strategy.
+---
 
-🏗️ System Architecture
-The system is designed with a modular and observable architecture, where each component has a distinct responsibility and is tracked for performance.
+## Architecture
 
-ObservableRetailOrchestrator: The "brain" of the operation. It initiates workflows, delegates tasks to specialized agents, and aggregates their final recommendations.
+### System Components
 
-EnhancedRetailAgent (Base Class): The blueprint for all agents, equipped with connections to the MCP, A2A layer, and Vector DB.
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    ObservableRetailOrchestrator                 │
+│                    (Workflow Management & Aggregation)          │
+└─────────────────────────────┬───────────────────────────────────┘
+                              │
+              ┌───────────────┼───────────────┐
+              │               │               │
+              ▼               ▼               ▼
+┌─────────────────┐  ┌───────────────┐  ┌─────────────────┐
+│  Pricing Agent  │  │ Pricing Agent │  │  Vector DB      │
+│       #1        │  │      #2       │  │ (Market Context)│
+└────────┬────────┘  └───────┬───────┘  └─────────────────┘
+         │                   │
+         │    ┌──────────────┴──────────────┐
+         │    │                             │
+         ▼    ▼                             ▼
+┌─────────────────────────┐      ┌─────────────────────────┐
+│     MCP Tool Server     │      │   A2A Communication     │
+│  • price_optimizer      │      │       Layer             │
+│  • demand_forecaster    │      │  (Inter-agent messaging)│
+└─────────────────────────┘      └─────────────────────────┘
+```
 
-EnhancedPricingAgent (Specialized Agent): An agent specifically designed to handle pricing analysis. It uses its tools and knowledge to develop comprehensive pricing strategies.
+### Component Descriptions
 
-RetailMCPServer: A collection of simulated, high-power tools that agents can invoke to perform complex calculations and analyses (e.g., price optimization, demand forecasting).
+| Component | Responsibility |
+|-----------|----------------|
+| `ObservableRetailOrchestrator` | The "brain" of the operation—initiates workflows, delegates tasks, and aggregates recommendations |
+| `EnhancedRetailAgent` | Base class blueprint for all agents with MCP, A2A, and Vector DB connections |
+| `EnhancedPricingAgent` | Specialized agent for pricing analysis using tools and knowledge base |
+| `RetailMCPServer` | Collection of high-power tools for complex calculations and analyses |
+| `A2ACommunicationLayer` | Manages all inter-agent messaging with reliable, traceable communication |
+| `ObservableVectorDB` | Long-term memory system providing contextual information to agents |
 
-A2ACommunicationLayer: Manages all inter-agent messaging, ensuring reliable and traceable communication.
+---
 
-ObservableVectorDB: Acts as the system's long-term memory, providing agents with contextual information from a knowledge base. All queries are logged and monitored.
+## Project Structure
 
-Workflow Diagram
-[Orchestrator]
-      |
-      +--> [VectorDB] (Get Market Context)
-      |
-      +--> Deploys [Pricing Agent 1] & [Pricing Agent 2]
-                  /        \
-                 /          \
-    (Uses)--> [MCP Tools]   [VectorDB] <-- (Uses)
-                 \          /
-                  \        /
-      (Broadcasts via A2A Layer)
-                   |
-                   |
-      +--> [Orchestrator] (Aggregates Results)
-      |
-[Final Strategy]
+```
+Multi-Agent-Reinforcement-Learning-for-Dynamic-Pricing/
+│
+├── main_execution.py          # Main entry point for running the system
+├── config_settings.py         # Configuration and API key management
+├── data_models.py             # Pydantic models and data structures
+├── data_generator.py          # Synthetic data generation utilities
+│
+├── llm_agent.py               # Base and specialized agent implementations
+├── market_environment.py      # Market simulation environment
+├── memory_system.py           # Agent memory and state management
+├── rag_system.py              # RAG system with vector database integration
+│
+├── simulator.py               # Simulation runner and orchestration
+├── visualization.py           # Plotting and visualization utilities
+│
+├── Retail_AI_Agent_Army.ipynb # Interactive Jupyter notebook demo
+└── README.md                  # This file
+```
 
-🛠️ Technology Stack
-Python 3.10+
+---
 
-LangChain & LangChain OpenAI: Core frameworks for building with LLMs.
+## Installation
 
-LangSmith: For AI observability and tracing.
+### Prerequisites
 
-OpenAI GPT-4: The primary model for agent reasoning and tool use.
+- Python 3.10 or newer
+- OpenAI API Key
+- LangSmith API Key (optional but recommended for observability)
 
-ChromaDB: For the local vector database.
+### Step 1: Clone the Repository
 
-Sentence-Transformers: For generating text embeddings.
+```bash
+git clone https://github.com/jupadhya1/Multi-Agent-Reinforcement-Learning-for-Dynamic-Pricing.git
+cd Multi-Agent-Reinforcement-Learning-for-Dynamic-Pricing
+```
 
-Pandas, NumPy, Matplotlib: For data manipulation and visualization.
+### Step 2: Install Dependencies
 
-Asyncio: For concurrent execution of agent tasks.
+```bash
+pip install langchain langchain-openai langsmith chromadb sentence-transformers pandas numpy matplotlib
+```
 
-⚙️ Setup and Installation
-Follow these steps to get the project running on your local machine.
+Or let the script auto-install dependencies on first run.
 
-1. Prerequisites
-Python 3.10 or newer.
+### Step 3: Configure API Keys
 
-An active OpenAI API Key.
+**Option A: Environment Variables (Recommended)**
 
-A LangSmith API Key (optional but highly recommended for observability).
+```bash
+export OPENAI_API_KEY="your-openai-api-key"
+export LANGSMITH_API_KEY="your-langsmith-api-key"
+export LANGSMITH_PROJECT="retail-agent-army"
+```
 
-2. Install Dependencies
-The Python script is designed to be self-contained. When you run it for the first time, it will automatically check for and install all the required packages using pip.
+**Option B: Direct Configuration**
 
-3. Configure API Keys
-Open the retail_agent_army.py file and navigate to Step 3. Replace the placeholder values with your actual API keys:
+Edit `config_settings.py` and replace placeholder values:
 
-# IMPORTANT: Replace these with your actual keys.
-OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', "YOUR_OPENAI_API_KEY")
-LANGSMITH_API_KEY = os.environ.get('LANGSMITH_API_KEY', "YOUR_LANGSMITH_API_KEY")
-LANGSMITH_PROJECT = os.environ.get('LANGSMITH_PROJECT', "retail-agent-army")
+```python
+OPENAI_API_KEY = "your-openai-api-key"
+LANGSMITH_API_KEY = "your-langsmith-api-key"
+LANGSMITH_PROJECT = "retail-agent-army"
+```
 
-For better security, it is recommended to set these as environment variables.
+---
 
-▶️ How to Run the Demo
-With the API keys configured, run the script from your terminal:
+## Usage
 
-python retail_agent_army.py
+### Running the Demo
 
-The script will perform the following actions:
+```bash
+python main_execution.py
+```
 
-Install any missing packages.
+The script will:
 
-Initialize all system components (MCP Server, A2A Layer, Agents, etc.).
+1. Install any missing packages automatically
+2. Initialize all system components (MCP Server, A2A Layer, Agents, etc.)
+3. Run the observable pricing workflow for sample products
+4. Print comprehensive observability data in JSON format
 
-Run the observable pricing workflow for two sample products.
+### Using the Jupyter Notebook
 
-Print the final, comprehensive observability data to the console in JSON format.
+For an interactive experience:
 
-📊 Checking the Observability Dashboard
-There are two ways to view the results:
+```bash
+jupyter notebook Retail_AI_Agent_Army.ipynb
+```
 
-Console JSON Output: The script prints a final JSON object containing performance metrics for all components. This gives you a quick, text-based summary of the entire run.
+---
 
-LangSmith Web Interface (Recommended):
+## Observability
 
-Log in to your LangSmith account.
+### Console Output
 
-Navigate to the retail-agent-army project.
+The script outputs a JSON object containing performance metrics for all components, providing a quick text-based summary of the entire run.
 
-You will find detailed, interactive traces for each workflow. You can inspect every step, view the inputs/outputs of LLM calls, and analyze the performance of each agent and tool. This is the best way to debug and understand the system's behavior.
+### LangSmith Dashboard (Recommended)
 
-This project serves as a robust template for building enterprise-ready multi-agent systems that are not only powerful but also transparent, manageable, and fully observable.
+1. Log in to your [LangSmith account](https://smith.langchain.com/)
+2. Navigate to the `retail-agent-army` project
+3. Explore detailed, interactive traces for each workflow
+
+**What you can inspect:**
+- Every step of agent execution
+- Inputs/outputs of all LLM calls
+- Tool usage and performance
+- Inter-agent communication patterns
+- End-to-end latency breakdowns
+
+---
+
+## Technology Stack
+
+| Category | Technologies |
+|----------|-------------|
+| **Core Framework** | LangChain, LangChain OpenAI |
+| **LLM** | OpenAI GPT-4 |
+| **Observability** | LangSmith |
+| **Vector Database** | ChromaDB |
+| **Embeddings** | Sentence-Transformers |
+| **Data Processing** | Pandas, NumPy |
+| **Visualization** | Matplotlib |
+| **Async Runtime** | Asyncio |
+
+---
+
+## Key Concepts
+
+### Model Context Protocol (MCP)
+
+MCP provides a standardized way for agents to access domain-specific tools. In this system, the simulated MCP server exposes:
+
+- **`price_optimizer`**: Calculates optimal pricing based on market conditions
+- **`demand_forecaster`**: Predicts demand based on historical data and trends
+
+### Agent-to-Agent (A2A) Communication
+
+The A2A layer enables agents to:
+- Share insights discovered during analysis
+- Broadcast important market signals
+- Coordinate on complex multi-step decisions
+
+### Observable Vector Database
+
+The vector database serves as the system's knowledge base, storing:
+- Business policies and rules
+- Historical pricing data
+- Market research and competitive intelligence
+
+---
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## License
+
+This project is open source. Please check the repository for license details.
+
+---
+
+## Acknowledgments
+
+- [LangChain](https://langchain.com/) for the agent framework
+- [LangSmith](https://smith.langchain.com/) for observability tooling
+- [OpenAI](https://openai.com/) for GPT-4
+- [ChromaDB](https://www.trychroma.com/) for vector storage
+
+---
+
+<p align="center">
+  <sub>Built with ❤️ for the AI and Retail community</sub>
+</p>
